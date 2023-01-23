@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import './header.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faBed, faPlane, faCar, faTaxi ,faPerson, faCalendarDays} from "@fortawesome/free-solid-svg-icons"
-import {DateRange} from 'react-date-range'
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { format } from "date-fns"
+import { DateRange } from 'react-date-range';
+import { useNavigate } from 'react-router-dom';
 
 const Header = ({type}) => {
     const [openOptions, setOpenOptions]=useState(false)
@@ -15,14 +16,17 @@ const Header = ({type}) => {
         room:1
 
     })
+    const [destination, setDestination]=useState("")
     const [openDate, setOpenDate]=useState(false)
- const [date, setDate]=useState([
-    {
-        startDate: new Date(),
-        endDate: new Date(), 
-        key:'selection'
-    }
- ])
+    const [date, setDate] = useState([
+        {
+          startDate: new Date(),
+          endDate: new Date(),
+          key: "selection",
+        },
+      ]);
+
+      const navigate=useNavigate()
  const handleOption=(name, operation) => {
     setOptions((prev)=>{
         return{
@@ -30,6 +34,10 @@ const Header = ({type}) => {
         }
     })
  }
+ const handleSearch=()=>{
+    navigate("/hotels", {state:{destination,date,options}} )
+
+}
 
   return (
     <div className='header'>
@@ -71,17 +79,21 @@ const Header = ({type}) => {
             <div className='headerSearch'>
                 <div className='headerSearchItem'>
                 <FontAwesomeIcon icon={faBed}  className="headerIcon"/>
-                <input type='text' placeholder='Where are you going' className='headerSeachInput'/>
+                <input type='text' 
+                placeholder='Where are you going' 
+                onChange={(e)=>setDestination(e.target.value)}
+                className='headerSeachInput'/>
 
                 </div>
 
                 <div className='headerSearchItem'>
                 <FontAwesomeIcon icon={faCalendarDays}  className="headerIcon"/>
-                   <span onClick={(e)=>setOpenDate(!openDate)} className='headerSeachText'>{`${format(date[0].startDate, "MM/dd/yyyy")} to ${format(date[0].endDate, "MM/dd/yyyy")} `}</span>
+                   <span onClick={(e)=>setOpenDate(!openDate)} className='headerSearchText'>{`${format(date[0].startDate, "MM/dd/yyyy")} to ${format(date[0].endDate, "MM/dd/yyyy")} `}</span>
                        { openDate && <DateRange
                     editableDateInput={true}
-                    onChange={item=>setDate([item.selection])}
+                    onChange={(item)=>setDate([item.selection])}
                     moveRangeOnFirstSelection={false}
+                    minDate={new Date()}
                     ranges={date}
                     className="date"
                    />}
@@ -127,7 +139,7 @@ const Header = ({type}) => {
                 </div>
 
                 <div className='headerSearchItem'>
-                    <button className='headerBtn' >Search</button>
+                    <button className='headerBtn'  onClick={handleSearch}>Search</button>
                 </div>
 
             </div>

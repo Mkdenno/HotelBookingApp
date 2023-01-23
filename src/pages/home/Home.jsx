@@ -6,6 +6,7 @@ import Featured from '../../components/featured/Featured'
 import PropertyList from '../../components/propertylist/PropertyList'
 import FeauturedProperty from '../../components/featuredProperty/FeauturedProperty'
 import MailList from '../../components/mailList/MailList'
+import Footer from '../../components/footer/Footer'
 
 
 const Home = () => {
@@ -20,6 +21,7 @@ const Home = () => {
           <h1 className='homeTitle'>Guest Hotels</h1>
           <FeauturedProperty/>
           <MailList/>
+          <Footer/>
         </div>
         
     </div>
